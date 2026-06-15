@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  /* Our vibrant, sporty Crimson Red tokens */
+  --color-brand-red: #DC2626;
+  --color-brand-red-hover: #B91C1C;
+  --color-brand-red-light: #FEF2F2;
+
+  /* Clean whites and premium darks */
+  --color-brand-white: #FFFFFF;
+  --color-brand-offwhite: #F9FAFB;
+  --color-brand-charcoal: #111827;
+  --color-brand-muted: #6B7280;
+
+  /* Hooking up our custom Poppins font variable */
+  --font-poppins: var(--font-poppins), sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-offwhite);
+    color: var(--color-brand-charcoal);
+    font-family: var(--font-poppins);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
