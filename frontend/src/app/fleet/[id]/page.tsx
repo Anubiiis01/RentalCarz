@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, use } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
@@ -12,45 +11,38 @@ const MASTER_FLEET = [
   { id: "3", name: "Taycan Turbo S", brand: "Porsche", category: "Luxury", pricePerDay: 390, hp: 750, topSpeed: 161, zeroToSixty: 2.6, transmission: "Automatic", seats: 4, fuel: "Electric" },
 ];
 
-export default function CarDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function CarDetailsPage({ params }: PageProps) {
+  // Next.js 15 Requirement: Safely unwrap the async params Promise using React.use()
+  const resolvedParams = use(params);
+  
   // State for the booking panel
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
 
-  // In Next.js 15, params is a Promise. Since this is a client component,
-  // we must use React's use hook to unwrap it.
-  const resolvedParams = use(params);
-
-  // Find the specific car using the URL parameter
+  // Find the specific car using the unwrapped ID parameter
   const car = MASTER_FLEET.find((c) => c.id === resolvedParams.id) || MASTER_FLEET[0];
 
-  // Calculate estimated price based on dates dynamically
-  const getDaysCount = () => {
-    if (!pickupDate || !returnDate) return 1;
-    const start = new Date(pickupDate);
-    const end = new Date(returnDate);
-    const differenceInTime = end.getTime() - start.getTime();
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-    return differenceInDays > 0 ? differenceInDays : 1;
-  };
-
-  const days = getDaysCount();
+  // Calculate estimated price based on dates (Mock logic)
+  const days = pickupDate && returnDate ? 3 : 1; // Hardcoded to 3 days for UI demo purposes
   const subtotal = car.pricePerDay * days;
   const taxes = Math.round(subtotal * 0.1); // 10% mock tax
   const total = subtotal + taxes;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Navbar integrated */}
+    <div className="flex flex-col min-h-screen bg-brand-offwhite">
       <Navbar />
-      
+
       <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         
         {/* Breadcrumb Navigation */}
         <nav className="mb-8 text-xs font-bold uppercase tracking-wider text-brand-muted">
           <Link href="/fleet" className="hover:text-brand-red transition-colors">Fleet</Link>
           <span className="mx-2">/</span>
-          <Link href={`/fleet?cat=${car.category}`} className="hover:text-brand-red transition-colors">{car.category}</Link>
+          <Link href={`/fleet`} className="hover:text-brand-red transition-colors">{car.category}</Link>
           <span className="mx-2">/</span>
           <span className="text-brand-charcoal">{car.brand} {car.name}</span>
         </nav>
@@ -125,14 +117,14 @@ export default function CarDetailsPage({ params }: { params: Promise<{ id: strin
                 <span className="text-sm font-bold text-gray-400 mb-1">/ day</span>
               </div>
 
-              <form className="space-y-5">
+              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Pick-up Date</label>
                   <input 
                     type="date" 
                     value={pickupDate}
                     onChange={(e) => setPickupDate(e.target.value)}
-                    className="w-full bg-gray-800 border border-gray-700 text-brand-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-red font-medium"
+                    className="w-full bg-gray-800 border border-gray-700 text-brand-white rounded-lg px-4 py-3 text-sm focus:outline-hidden focus:border-brand-red font-medium"
                   />
                 </div>
 
@@ -142,14 +134,14 @@ export default function CarDetailsPage({ params }: { params: Promise<{ id: strin
                     type="date" 
                     value={returnDate}
                     onChange={(e) => setReturnDate(e.target.value)}
-                    className="w-full bg-gray-800 border border-gray-700 text-brand-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-red font-medium"
+                    className="w-full bg-gray-800 border border-gray-700 text-brand-white rounded-lg px-4 py-3 text-sm focus:outline-hidden focus:border-brand-red font-medium"
                   />
                 </div>
 
                 {/* Price Calculation Breakdown */}
                 <div className="pt-4 space-y-3 border-t border-gray-700">
                   <div className="flex justify-between text-sm font-medium text-gray-300">
-                    <span>${car.pricePerDay} x {days} {days === 1 ? 'day' : 'days'}</span>
+                    <span>${car.pricePerDay} x {days} days</span>
                     <span>${subtotal}</span>
                   </div>
                   <div className="flex justify-between text-sm font-medium text-gray-300">
@@ -163,14 +155,14 @@ export default function CarDetailsPage({ params }: { params: Promise<{ id: strin
                 </div>
 
                 <Link 
-                  href="/checkout"
-                  className="w-full mt-6 py-4 bg-brand-red text-brand-white font-black rounded-lg hover:bg-brand-red-hover transition-colors shadow-lg shadow-red-600/20 text-center block uppercase tracking-wide"
+                  href="/auth"
+                  className="w-full mt-6 py-4 bg-brand-red text-brand-white font-black rounded-lg hover:bg-brand-red/90 text-center block uppercase tracking-wide transition-all shadow-lg shadow-red-600/20"
                 >
-                  Reserve Now
+                  Sign In to Reserve
                 </Link>
                 
                 <p className="text-center text-[10px] text-gray-400 font-semibold uppercase tracking-wider mt-4">
-                  You won't be charged yet
+                  Account registration required
                 </p>
               </form>
             </div>

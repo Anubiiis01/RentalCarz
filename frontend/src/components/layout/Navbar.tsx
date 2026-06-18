@@ -21,10 +21,10 @@ export default function Navbar() {
         </nav>
 
         {/* Action Buttons */}
-        <div className="flex items-center space-x-4">
-          <Link href="/login" className="text-sm font-semibold text-brand-charcoal hover:text-brand-red transition-colors hidden sm:block">
-            Sign In
-          </Link>
+<div className="flex items-center space-x-4">
+  <Link href="/auth" className="text-sm font-semibold text-brand-charcoal hover:text-brand-red transition-colors hidden sm:block">
+    Sign In
+  </Link>
           <Link 
             href="/fleet" 
             className="px-5 py-2.5 bg-brand-red text-brand-white text-sm font-semibold rounded-lg hover:bg-brand-red-hover transition-all duration-200 shadow-md shadow-red-600/10 cursor-pointer"
