@@ -20,7 +20,7 @@ export default function Hero() {
       {/* 1. Header Pitch Area */}
       <div className="text-center max-w-3xl mx-auto space-y-6 mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-red-light rounded-full border border-red-100 text-brand-red text-xs font-bold uppercase tracking-wider">
-          🏎️ Experience Excellence
+          Experience Excellence
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-brand-charcoal leading-tight">
           Drive The Luxury You <span className="text-brand-red">Deserve.</span>
